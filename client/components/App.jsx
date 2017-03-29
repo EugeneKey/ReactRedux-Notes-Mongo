@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-//import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-//import { push } from 'react-router-redux';
 import DevTools from '../utils/devtools';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';

@@ -1,16 +1,13 @@
 import mongoose from 'mongoose';
-
-import config from '../../etc/config.json';
-
 import '../models/Note';
+import config from '../../etc/config.json';
 
 const Note = mongoose.model('Note');
 
 export function setUpConnection() {
   mongoose.Promise = global.Promise;
-  mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`);
+  mongoose.connect(process.env.MONGODB_URI || config.mongodb);
 }
-
 export function listNotes() {
   return Note.find();
 }

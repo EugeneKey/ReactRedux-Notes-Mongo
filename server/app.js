@@ -2,9 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-import {serverPort} from '../etc/config.json';
-
 import * as db from './utils/DataBaseUtils';
+
+import {apiPort} from '../etc/config.json';
+
+const serverPort = process.env.PORT || apiPort
 
 // Initialization of express application
 const app = express();
@@ -32,5 +34,7 @@ app.delete('/notes/:id', (req, res) => {
 });
 
 app.listen(serverPort, function() {
-  console.info(`Server is up and running on port ${serverPort}`);
+  console.log('Server is up and running on port ' + serverPort);
+  console.log('MONGODB_URI: ' + process.env.MONGODB_URI);
+  console.log('NODE_ENV: ' + process.env.NODE_ENV);
 });

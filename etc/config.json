@@ -1,0 +1,5 @@
+{
+    "apiPrefix": "http://localhost:3001",
+    "apiPort": "3001",
+    "mongodb": "mongodb://localhost:27017/notes"
+}

@@ -1,7 +1,11 @@
 var webpack = require('webpack');
 const path = require('path');
+const GhPagesWebpackPlugin = require('gh-pages-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+console.log(process.env.NODE_ENV);
+console.log(NODE_ENV);
 
 module.exports = {
     entry: "./client/main.js",
@@ -14,7 +18,7 @@ module.exports = {
     watchOptions: {
         aggregateTimeout: 100
     },
-    devtool: NODE_ENV == 'development' ? 'cheap-module-eval-source-map' : null,
+    devtool: NODE_ENV == 'development' ? 'cheap-module-eval-source-map' : false,
     devServer: {
         host: '0.0.0.0',
         port: 3000,
@@ -27,9 +31,17 @@ module.exports = {
             chunks: false,
             'normal': true
         }
-    },                                
+    },
     plugins: [
-        new webpack.LoaderOptionsPlugin({ debug: NODE_ENV == 'development' })
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            "process.env": {
+              NODE_ENV: JSON.stringify(NODE_ENV),
+              BASE_URL: NODE_ENV == 'development' ? JSON.stringify('/') : JSON.stringify('/ReactRedux-Notes-Mongo'),
+              API_SERVER: NODE_ENV == 'development' ? null : JSON.stringify('https://dry-shelf-54305.herokuapp.com')
+            },
+        }),
+        new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
         rules: [
@@ -69,10 +81,19 @@ if (NODE_ENV == 'production') {
        }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
-                sourceMap: false,
                 warnings:       false,
                 drop_console:   true,
                 unsafe:         true
+            }
+        }),
+        new GhPagesWebpackPlugin({
+            path: './public',
+            options: {
+                message: 'Update ReactApp Notes MongoDB',
+                user: {
+                    name: 'EugeneKey',
+                    email: 'evgeny.konyaev@gmail.com'
+                }
             }
         })
     );
